@@ -1,0 +1,47 @@
+#signupContainer(ng-controller="SignupCtrl")
+	#signup.modal.fade
+		.modal-header
+			button.close(type="button",data-dismiss="modal") x
+			h3 Signup for Seconds 'Til
+		.modal-body
+			form#signup-form(name="signup",ng-submit="signupForm()")
+				p We'll save your countdowns for you and give you access to more features like notifications, customization and more!
+				.control-group
+					.controls
+						input(ng-model="email",type="text",name="email",placeholder="Email Address",required)
+				button.btn.btn-primary.pull-left(type="submit") Signup
+#faq.container(ng-controller="FaqCtrl")
+	h2 Seconds 'til Countdown Service Frequently Asked Questions:
+	ol
+		li
+			h3 What is a countdown service?
+			p Seconds 'til provides a simple countdown service.  We'll host a single web page for you that displays a countdown timer to a date that you supply.
+		li
+			h3 What would I use a countdown service for?
+			p A countdown service is a fun tool to help you and your friends keep track of how long until your event happens.  You can countdown the seconds 'til your birthday, a special occasion or a planned outing.  We love to hear about the unique ways people are using this service so let us know how you're using it by emailing us at:
+			p
+				a(href="mailto:suggestions@secondstil.com") suggestions@secondstil.com
+
+		li
+			h3 What features are available to people who sign up?
+			p Seconds 'Til only uses your email address to create an account so we can save your countdowns for you.  Members get loads of cool features like:
+				ul
+					li Save and edit multiple countdown pages
+					li Customize your countdown date format
+					li View statistics on your countdown page
+					li Notifications when your countdown hits a certain point
+					li Modify the look and feel of your countdown by adding colors styling
+					li ... and much more!
+			p
+				button.btn.btn-primary(data-target="#signup",data-toggle="modal") Sign up right now to get started!
+		li
+			h3 Do you have an API?
+			p Yes. We have a JSON RPC (2.0) based api so you can create countdowns for your site.  View the documentation here:
+			p
+				a(href="/developers") Seconds 'Til Countdown Service API Documentation
+		li
+			h3 How can I get other questions answered?
+			p If you have more questions or just want to send us some feedback, we'd love to hear it.  Send us an email to:
+			p
+				a(href="mailto:suggestions@secondstil.com") suggestions@secondstil.com
+

@@ -1,0 +1,9 @@
+extends calendar-layout
+block content
+	#month.container
+		h1 Countdown Events in #{month}, #{year}
+		- each val,key in counts
+			- var date = month + ', ' + key + ' ' + year;
+			a.month(target="_self",href="/calendar/#{year}/#{month}/#{key}") #{date} (#{val})
+
+

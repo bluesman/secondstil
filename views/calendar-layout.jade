@@ -1,0 +1,13 @@
+!!!
+html.trigger-partial(ng-app="secondstillApp")
+	head
+		include includes/head
+	body(ng-controller="CalendarCtrl")
+		//- include includes/facebook-sdk
+		include includes/header
+		#content
+			block content
+		- if (typeof directory !== "undefined")
+			include includes/directory
+		include includes/footer
+	include includes/js-includes

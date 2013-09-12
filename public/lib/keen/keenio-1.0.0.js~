@@ -1,0 +1,144 @@
+/**
+ * Keen IO JavaScript Library
+ * Version: 1.0.0
+ * User: dkador
+ */
+
+// KEEN OBJECT
+
+var Keen = {
+    /**
+     * Configure the Keen IO JS Library with a Project ID and API Key.
+     * @param projectId the Keen IO Project ID
+     * @param apiKey the Keen IO API Key
+     */
+    configure:function (projectId, apiKey) {
+        this.client = new Keen.Client(projectId, apiKey);
+    },
+
+    /**
+     * Add an event to Keen IO.
+     * @param eventCollection string, the name of the event collection
+     * @param event JS object, the actual event to send
+     * @param success optional function, invoked on success
+     * @param error optional function, invoked on failure
+     */
+    addEvent:function (eventCollection, event, success, error) {
+        this.client.uploadEvent(eventCollection, event, success, error);
+    },
+
+    /**
+     * Sets the global properties to use.
+     * @param newGlobalProperties a function
+     */
+    setGlobalProperties: function (newGlobalProperties) {
+        if (newGlobalProperties && typeof(newGlobalProperties) == "function") {
+            this.client.globalProperties = newGlobalProperties;
+        } else {
+            throw new Error("Invalid value for global properties: " + newGlobalProperties);
+        }
+    }
+};
+
+// KEEN CLIENT OBJECT
+
+Keen.Client = function (projectId, apiKey) {
+    this.projectId = projectId;
+    this.apiKey = apiKey;
+    this.globalProperties = null;
+};
+
+/**
+ * Uploads a single event to the Keen IO servers.
+ * @param eventCollection string, the name of the event collection to use
+ * @param event JS object, the actual event to send
+ * @param success optional function, invoked on success
+ * @param error optional function, invoked on failure
+ */
+Keen.Client.prototype.uploadEvent = function (eventCollection, event, success, error) {
+    var url = this.getKeenUrl("/events/" + eventCollection);
+
+    // handle global properties
+    var newEvent = {};
+    if (this.globalProperties) {
+        newEvent = this.globalProperties(eventCollection);
+    }
+    // now add in the properties from the user-defined event
+    for (var property in event) {
+        if (event.hasOwnProperty(property)) {
+            newEvent[property] = event[property];
+        }
+    }
+
+    this.sendHttpRequest("POST", url, null, newEvent, success, error);
+};
+
+/**
+ * Returns a full URL by appending the provided path to the root Keen IO URL.
+ * @param path
+ * @return {String}
+ */
+Keen.Client.prototype.getKeenUrl = function (path) {
+    return "https://api.keen.io/3.0/projects/" + this.projectId + path;
+};
+
+/**
+ * Asynchronously sends a HTTP request, JSON-encoding the body if applicable, and invokes the success
+ * callback when the HTTP request succeeds with the JSON-decoded response body or invokes the error
+ * callback when the HTTP request fails with the XHR object and the exception, if applicable.
+ *
+ * Automatically sets the Content-Type of the request to "application/json" and sets the Authorization
+ * header.
+ *
+ * @param method what HTTP method to use
+ * @param url what URL to send the request to
+ * @param headers an object with headers
+ * @param body the body of the HTTP request
+ * @param success optional callback for success
+ * @param error optional callback for error
+ */
+Keen.Client.prototype.sendHttpRequest = function (method, url, headers, body, success, error) {
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4) {
+            if (xhr.status >= 200 && xhr.status < 300) {
+                var response;
+                try {
+                    response = JSON.parse(xhr.responseText);
+                } catch (e) {
+                    console.log("Could not JSON parse HTTP response: " + xhr.responseText);
+                    if (error) {
+                        error(xhr, e);
+                    }
+                }
+
+                if (response) {
+                    if (success) {
+                        success(response);
+                    }
+                }
+            } else {
+                console.log("HTTP request failed.");
+                if (error) {
+                    error(xhr, null);
+                }
+            }
+        }
+    };
+
+    xhr.open(method, url, true);
+    xhr.setRequestHeader("User-Agent", "KeenIOJS/1.0");
+    xhr.setRequestHeader("Authorization", this.apiKey);
+    if (body) {
+        xhr.setRequestHeader("Content-Type", "application/json");
+    }
+    if (headers) {
+        for (var headerName in headers) {
+            if (headers.hasOwnProperty(headerName)) {
+                xhr.setRequestHeader(headerName, headers[headerName]);
+            }
+        }
+    }
+    var toSend = body ? JSON.stringify(body) : null;
+    xhr.send(toSend);
+};

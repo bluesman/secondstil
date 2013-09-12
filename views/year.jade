@@ -1,0 +1,10 @@
+extends calendar-layout
+block content
+	#year.container
+		h1 Countdown Events in #{year}
+		- each monthName in monthNames
+			- if (counts[monthName])
+				a.month(target="_self",href="/calendar/#{year}/#{monthName}") #{monthName} (#{counts[monthName]})
+			- else
+				span.month #{monthName} (0)
+

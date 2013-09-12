@@ -1,0 +1,8 @@
+extends calendar-layout
+block content
+	#day.container
+		h1 Countdown Events for #{month} #{day}, #{year}
+		- each countdown in countdowns
+			a.month(target="_self",href="/#{countdown.vanityUrl}") #{countdown.name}
+
+

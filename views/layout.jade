@@ -1,0 +1,13 @@
+!!!
+html.trigger-partial(ng-app="secondstillApp")
+  head
+    include includes/head
+  body(ng-controller="MainCtrl")
+    //- include includes/facebook-sdk
+    include includes/header
+    #content(ng-view)
+      block content
+    - if (typeof directory !== "undefined")
+      include includes/directory
+    include includes/footer
+  include includes/js-includes

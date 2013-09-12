@@ -1,0 +1,31 @@
+!!!
+html.trigger-partial(ng-app="secondstillApp")
+	head
+		include includes/head
+	body(ng-controller="MainCtrl")
+		//- include includes/facebook-sdk
+		include includes/header
+		countdown(vanity-url="#{countdown.vanityUrl}",name="#{countdown.name}",target-date="#{countdown.targetDate}",format="#{countdown.format}")
+		p.countdownInfo Countdown for #{countdown.name} ends on #{countdown.targetDate.format()}.
+		#createCountdown
+			a.btn.btn-primary(href="/",target="_self") Click Here to Create Your Own Countdown
+		- if (locals.showModal)
+			#signup.modal.fade(signup-modal,ng-controller="SignupCtrl")
+				.modal-header
+					button.close(type="button",data-dismiss="modal") x
+					h3 Share Your Countdown URL
+				.modal-body
+					p Here's your url! Share it with your friends
+					p#countdownUrl #{countdown.url()}
+					form#signup-form(name="signup",ng-submit="signupForm()")
+						p We'll save your countdowns for you and give you access to more features like notifications, customization and more!
+						.control-group
+							.controls
+								input(ng-model="email",type="text",name="email",placeholder="Email Address",required)
+						button.btn.btn-primary.pull-left Save
+				.modal-footer
+					a(href="#",data-dismiss="modal") No thanks, I don't want any cool features
+		include includes/footer
+	include includes/js-includes
+
+

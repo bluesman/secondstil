@@ -1,0 +1,45 @@
+@red:#9D0006;
+
+#content {
+	margin-top:60px;
+}
+
+.clearfix {
+  *zoom: 1;
+  &:before,
+  &:after {
+    display: table;
+    content: "";
+  }
+
+  &:after {
+    clear: both;
+  }
+}
+
+.navbar-inner {
+	#stopwatch-small {
+		display:block;
+		height:27px;
+		width:25px;
+		float:left;
+		margin:6px;
+		background: transparent url('/img/stopwatch-small-grey.png') no-repeat center center;
+	}
+
+	#logo {
+		height:25px;
+		width:210px;
+		background: transparent url('/img/logo.png') no-repeat center center;
+	}
+
+	.logout {
+		line-height:40px;
+		vertical-align:middle;
+		a {color:#FFF;}
+	}
+}
+
+@import "directory.less";
+@import "index.less";
+@import "countdown.less";

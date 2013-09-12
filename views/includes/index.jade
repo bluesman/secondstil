@@ -1,0 +1,43 @@
+#index.container(ng-controller="IndexCtrl")
+	.hero-unit
+		#stopwatch-large
+			h1 The World's Easiest Event Countdown Service.
+			p You give us a date & time of any event and we'll give you the url for a page that will show how much time is left 'til the event.
+		form#date-form.form-horizontal(name="create",ng-submit="submitForm()")
+			.control-group
+				.error.alert.span10(ng-show="formError") Enter a valid date and name in order to create a countdown page.
+			.control-group
+				.control-label
+					label Target Date:
+				.controls
+					select(ng-model="month",ng-options="m for m in months")
+						option(value="") Month
+					input.input-mini(type="text",ng-model="day",name="day",placeholder="Day",maxlength="2")
+					span ,
+					input.input-mini(type="text",ng-model="year",name="year",placeholder="Year",maxlength="4",ng-minlength="4")
+					span @
+					input.input-mini(type="text",ng-model="hour",name="hour",placeholder="Hour",maxlength="2")
+					span :
+					input.input-mini(type="text",ng-model="min",name="min",placeholder="Min",maxlength="2")
+					span :
+					input.input-mini(type="text",ng-model="seconds",name="seconds",placeholder="Sec")
+					select(ng-model="ampm",ng-options="a for a in ampms")
+			.control-group
+				.control-label
+					label Format:
+				.controls
+					select#format(ng-model="format",ng-options="f for f in formats")
+					input#formatPreview(date-preview,type="text",ng-model="formatPreview",placeholder="Provide a date above to view the preview",disabled)
+			.control-group
+				.control-label
+					label Seconds 'Til:
+				.controls
+					input#event-name(type="text",ng-model="eventName",placeholder="Name Your Event")
+			.control-group
+				.control-label
+					label Vanity URL:
+				.controls
+					input#vanity-domain.input-xlarge(type="text",placeholder="http://secondstil.com/",disabled)
+					input#vanity-url(type="text",ng-model="vanityUrl",vanity-url)
+			#form-button.control-group
+				button.btn.btn-large.btn-primary Start Your Countdown!

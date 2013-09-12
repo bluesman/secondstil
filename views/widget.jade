@@ -1,0 +1,39 @@
+!!!
+html
+	head
+		meta(charset="utf-8")
+		meta(name="robots",content="noodp, noydir")
+		meta(name="referrer",content="default",id="meta_referrer")
+		meta(name="description",content="Seconds 'Til is a countdown service where you can find out how long until your favorite holiday, season, or event will occur. People use the free Seconds 'Til service so they can create a custom countdown timer for an upcoming event and share with friends.")
+		title #{title}
+		style body.plugin{background:transparent;overflow:hidden}
+		script(type="text/javascript")
+			(function(window, undefined) {
+				var targetDate = new Date("#{countdown.targetDate}");
+				var updateLater = function() {
+					window.setTimeout(function() {
+						var seconds = Math.abs(new Date() - targetDate)/1000;
+						var d = Math.floor(seconds/86400);
+						var dStr = (d == 1) ? d + " Day, " : d + " Days, ";
+
+						var h = Math.floor((seconds % 86400) / 3600);
+						var hStr = (h == 1) ? h + " Hour, " : h + " Hours, ";
+
+						var m = Math.floor(((seconds % 86400) % 3600) / 60);
+						var mStr = (m == 1) ? m + " Min " : m + " Mins ";
+
+						var s = Math.floor(((seconds % 86400) % 3600) % 60);
+						var sStr = "and " + s + " Seconds 'til "
+
+						var str = dStr + hStr + mStr + sStr + "#{countdown.name}";
+
+						console.log(str);
+						window.document.getElementById("countdown").innerHTML = str;
+						updateLater();
+					}, 1000);
+				};
+				updateLater();
+			})(window);
+	body
+		#countdown
+

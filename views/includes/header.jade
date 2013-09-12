@@ -1,0 +1,24 @@
+.navbar.navbar-inverse.navbar-fixed-top(ng-controller="NavCtrl")
+  .navbar-inner
+    .container
+      span#stopwatch-small
+      a#logo.brand(href="/",title="Seconds 'til",target="_self")
+      .nav-collapse.collapse
+        ul.nav
+          li(ng-class="{'/':'active','':'active'}[currentPath]")
+            a(href="/",target="_self"              ) Home
+          li(ng-class="{'/faq':'active'}[currentPath]")
+            a(href="/faq",target="_self") FAQ
+          li(ng-class="{'/developers':'active'}[currentPath]")
+            a(href="/developers",target="_self") Developers
+          - if (req.session.loggedIn)
+            li(ng-class="{'/dashboard':'active'}[currentPath]")
+              a(href="/dashboard",target="_self") Dashboard
+        - if (req.session.loggedIn)
+          .logout
+            a(href="#",ng-click="logout()").pull-right Logout
+        - else
+          form.navbar-form.pull-right(name="login",ng-submit="loginForm()",ng-controller="LoginCtrl")
+            input.span2(type="text",placeholder="Email",ng-model="email")
+            input.span2(type="password",placeholder="Password",ng-model="password")
+            button.btn(type="submit") Sign In
